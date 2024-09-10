@@ -1,0 +1,506 @@
+---
+title: "BSc. Hons Artificial Intelligence and Data Science"
+author: "CM 1606 Computational Mathematics"
+output: pdf_document
+---
+
+Name - Senuli Wickramage
+
+IIT ID - 20220950
+
+RGU ID - 2330973
+
+# Question 1
+
+A bag contains 5 red balls, each labelled with a number 5, and 3 green
+balls, each labelled with a number 10. Another bag contains 2 blue
+balls, each labelled with a number 15, and 4 yellow balls, each labelled
+with a number 20. You randomly draw one ball from each bag. Let the
+random variable $X$ represent the sum of the numbers on the two balls:
+\vspace{10pt}
+
+### a) Obtain the possible values of $X$.
+\vspace{10pt}
+```{r}
+possible_values_X <- c(5+15, 5+20, 10+15, 10+20)
+unique_values_X <- unique(possible_values_X)
+unique_values_X
+```
+\vspace{10pt}
+### b) Find the probability mass function (pmf) of $X$ in the usual format.
+\vspace{10pt}
+```{r}
+pmf_X <- table(possible_values_X) / length(possible_values_X)
+pmf_X
+```
+\vspace{10pt}
+### c) Calculate the expected value $E(X)$ and variance $Var(X)$.
+\vspace{10pt}
+```{r}
+E_X <- sum(unique_values_X * pmf_X)
+E_X
+```
+\vspace{5pt}
+
+
+$$ Var(X) = E({X}^2) - {E(X)}^2 $$
+
+\vspace{5pt}
+```{r}
+
+# Calculate E(X^2)
+E_X_squared <- sum(unique_values_X^2 * pmf_X)
+
+# Calculate Var(X)
+Var_X <- E_X_squared - E_X^2
+Var_X
+
+```
+\vspace{10pt}
+### d) Let $Y=2X-3$ be another random variable on the same sample space. Construct the pmf of Y.
+\vspace{10pt}
+```{r}
+possible_values_Y <- 2 * possible_values_X - 3
+unique_values_Y <- unique(possible_values_Y)
+unique_values_Y
+```
+
+```{r}
+pmf_Y <- table(possible_values_Y)/length(possible_values_Y)
+pmf_Y
+```
+\vspace{10pt}
+### e) Obtain the cumulative distribution function (cdf) of $Y$ and show in the usual format.
+\vspace{10pt}
+```{r}
+cdf_Y <- cumsum(pmf_Y)
+cdf_Y
+```
+\vspace{10pt}
+### f) Calculate $P(Y= 37)$ using the cdf of $Y$.
+\vspace{10pt}
+```{r}
+P_Y_37 <- cdf_Y[which(possible_values_Y == 37)]
+P_Y_37
+```
+\vspace{10pt}
+\pagebreak
+
+# Question 2
+
+Generate a random sample of 500 values from a normal distribution with a mean of 36 and a standard deviation (SD) of 8.
+\vspace{10pt}
+```{r}
+sample_normal <- rnorm(500, mean = 36, sd = 8)
+```
+
+### a) Create a histogram with 10 bins using the range (min to max).
+\vspace{10pt}
+```{r}
+par(las=1) # Ensures axis labels are parallel to the axis
+
+# Set up the histogram with 10 bins and using the range (min to max)
+hist(sample_normal, breaks = 10, main = "Histogram", 
+      xlab = "Values", ylab = "Frequency")
+
+box() # Draw a box around the histogram
+
+```
+
+\vspace{10pt}
+\pagebreak
+
+### b) Show the density curve over the histogram constructed.
+\vspace{10pt}
+```{r}
+par(las=1)
+set.seed(123)
+# Set up the histogram with 10 bins and using the range (min to max)
+hist(sample_normal, breaks = 10, main = "Histogram", 
+     xlab = "Values", ylab = "Frequency", freq = F)
+#lines(density(sample_normal), col = "red")
+curve(dnorm(x, mean = 36, sd = 8), add = T, col="red", lwd = 2)
+box()
+
+```
+\vspace{6pt}
+
+### c) Comment on the histogram and the density curve with respect to the data generated.
+\vspace{6pt}
+
+The histogram shows the distribution of the data, while the density curve provides an estimate of the probability density function of the data. The highest bar on the histogram is around the middle, which means most of our data points cluster near the mean of 36. The shape of the histogram is like a bell, which is typical for a normal distribution. The curve drawn on the histogram follows this bell shape closely, indicating that our data fits well with the expected pattern for a normal distribution. The width of the distribution, shown by how spread out the bars are in the histogram and the width of the curve, matches the standard deviation of 8. There aren't any outliers or unusual values that stand out, suggesting that our data is consistent and doesn't have any extreme values. The data behaves in a predictable and expected manner for a normal distribution.
+
+\vspace{10pt}
+\pagebreak
+
+# Question 3
+
+\vspace{10pt}
+
+Consider the given data set. 
+\vspace{10pt}
+
+```{=tex}
+\begin{table}
+    \centering
+    \def\arraystretch{2}
+    \begin{tabular}{|c|p{0.5in}|p{0.5in}|p{0.5in}|p{0.5in}|p{0.5in}|p{0.5in}|p{0.5in}|p{0.5in}|p{0.5in}|}
+        \hline
+    $X$ & 2 & 2.5 & 3 & 3.5 & 4 & 4.5 & 5 & 5.5 & 6\\ \hline
+    $Y$ & 6 & 7.25 & 8 & 9.0625 & 10 & 11.0625 & 12.25 & 13.5625 & 16\\ \hline
+    \end{tabular}
+\end{table}
+```
+\vspace{10pt}
+### a) Create a data frame using the above data and plot the data ($Y$ versus $X$).
+\vspace{10pt}
+```{r}
+# Given data
+X <- c(2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6)
+Y <- c(6, 7.25, 8, 9.0625, 10, 11.0625, 12.25, 13.5625, 16)
+
+data_frame <- data.frame(X = X, Y = Y)
+plot(data_frame$X, data_frame$Y, xlab = "X", ylab = "Y"
+     , main = "Scatter Plot of Y versus X")
+
+```
+\vspace{10pt}
+
+### b) Find the Pearson’s correlation coefficient $\left(r_{x,y} \right)$.
+\vspace{10pt}
+```{r}
+correlation_coefficient <- cor(X, Y)
+correlation_coefficient
+```
+\vspace{10pt}
+### c) Comment on the possible reasons for the value of $\left(r_{x,y} \right)$.
+\vspace{10pt}
+
+The correlation coefficient indicates a strong positive linear relationship between X and Y since its value is very close to 1. Meaning that if we draw the regression line,  the distance between the data points and the regression line is minimal. 
+
+\vspace{10pt}
+### d) Find the Pearson’s correlation coefficient $\left(R_{x,y} \right)$ by considering only the last six pairs of data, and comment on the possible reasons why $r_{x,y}$ has changed.
+\vspace{10pt}
+```{r}
+correlation_coefficient_last_six <- cor(X[4:9], Y[4:9])
+correlation_coefficient_last_six
+```
+
+The Pearson's correlation of the last 6 values is also very close to the coefficient of all values. And it also represents a strong linear relationship in the last six values. But a small difference has occurred in the new coefficient due to the minor changes in the pattern of data. Because in the last six data, there are values with multiple decimal points that goes out of pattern.
+
+\vspace{10pt}
+### e) Consider the new variables $X_1 = 2X-1$ and $X_2 = X^2$ What can you say about the relationship between $r_{x,y}$ \& $r_{x1,y}$ and $r_{x,y}$ \& $r_{x2,y}$.
+\vspace{10pt}
+```{r}
+
+X_1 <- 2 * X -1
+X_2 <- X^2
+
+correlation_coefficient_X1 <- cor(X_1, Y)
+correlation_coefficient_X2 <- cor(X_2, Y)
+
+correlation_coefficient_X1
+correlation_coefficient_X2
+```
+The correlation coefficient between $X_1$ and $Y$ is the same as the correlation coefficient between $X$ and $Y$. This is because $X_1$ is just a linear transformation of $X$ (scaling and shifting), which doesn't change the relationship between $X$ and $Y$.
+
+The correlation coefficient between $X_2$ and $Y$ is different from the original correlation coefficient between $X$ and $Y$. This is because $X_2$ changes $x$ in a quadratic way, which changes the relationship with $Y$ that will result in a change in the correlation coefficient.
+
+\vspace{10pt}
+\pagebreak
+
+# Question 4
+
+\vspace{10pt}
+The built-in data set “mtcars” provides information about various car models, including attributes like mpg (miles per gallon), hp (horsepower), and qsec (quarter-mile time in seconds). This data set is a data frame with 32 rows and 11 variables.
+\vspace{10pt}
+
+### a) Print the first ten rows of the "mtcars" data set.
+\vspace{10pt}
+```{r}
+# load the data set
+data(mtcars)
+
+# Printing the first 10 rows
+head(mtcars, 10)
+```
+\vspace{10pt}
+### b) Print the 5-number summary of two variables: mpg (miles per gallon) and hp (horsepower).
+\vspace{10pt}
+```{r}
+# 5 number summary
+# minimum   1st quartile    median   3rd quartile   maximum 
+
+# miles per gallon
+summary(mtcars$mpg)
+```
+\vspace{6pt}
+```{r}
+# horsepower
+summary(mtcars$hp)
+```
+\vspace{10pt}
+### c) Plot a scatter plot to visualize the association between mpg (x-axis) and hp (y-axis). Comment on the type of association you observe.
+\vspace{10pt}
+```{r}
+plot(mtcars$mpg, mtcars$hp, xlab = "Miles per gallon", ylab = "Horsepower", 
+     main = "Plot of Miles per gallon versus horsepower")
+```
+We can see from this scatter plot, that as the Miles per gallon increases, Horsepower decreases - represents a negative correlation. The relationship is not linear, it shows a curve indicating a non-linear relationship between the two. This implies that the effect of one factor to the other is not constant across all levels, meaning that it could be a result of other factors as well.
+
+\vspace{10pt}
+
+### d) Fit a linear regression model to predict mpg in terms of hp (horsepower), obtain the output and the fitted values, and show the regression line over the data.
+\vspace{10pt}
+```{r}
+# Fit linear regression model
+lm_model <- lm(mpg ~ hp, data = mtcars)
+
+# Obtain the fitted values
+fitted_values <- predict(lm_model)
+fitted_values
+
+```
+\vspace{10pt}
+
+```{r}
+# Plot the scatter plot with the regression line
+plot(mtcars$hp, mtcars$mpg, xlab = "Horsepower", ylab = "Miles per gallon", 
+     main = "Linear Regression: Miles per gallon vs. Horsepower")
+abline(lm_model, col = "red", lwd = 2)
+
+```
+
+\vspace{10pt}
+\pagebreak
+
+### e) Write down the fitted equation of the form $\widehat{Y} = \hat{\beta}_0 + \hat{\beta}_1 X$.By how many units does mpg increase or decrease when hp (horsepower) increases by one unit?
+\vspace{10pt}
+```{r}
+summary(lm_model)
+
+```
+\vspace{10pt}
+
+$\hat{\beta}_0$ - Intercept coefficient
+
+$\hat{\beta}_1 X$ - Coefficient for hp
+
+The fitted equation is mpg = 30.09886 - 0.06823 * hp.
+
+When hp increases by one unit, mpg decreases by 0.06823 units.
+
+\vspace{10pt}
+
+### f) Plot the residuals versus $X$ (i.e., residual plot) to find out if the fitted straight line is adequate and to check for possible outliars. Comment on the plot.
+\vspace{10pt}
+```{r}
+
+# Calculate residuals
+residuals <- resid(lm_model)
+
+# Plot residuals versus horsepower
+plot(mtcars$hp, residuals, xlab = "Horsepower", ylab = "Residuals",
+     main = "Residual Plot: Residuals vs. Horsepower")
+
+# Add a horizontal line at y = 0 for reference
+abline(h = 0, col = "red", lwd = 2)
+
+# Add a lowess smoother to check for any patterns
+lines(lowess(mtcars$hp, residuals), col = "blue", lwd=2)
+
+```
+\vspace{6pt}
+
+Since the residuals are randomly scattered around the horizontal line at y = 0 without any clear pattern, it suggests that the linear regression model adequately captures the relationship between mpg and hp.
+
+There are a few outliers, (points far from the horizontal line). They are strong data points that have a strong influence on the model fit. 
+
+These points should be investigated further to determine if they are valid data points or potential errors.
+
+\vspace{10pt}
+
+### g) Predict the mpg for a car with a horsepower of 110.
+\vspace{10pt}
+```{r}
+predicted_mpg <- predict(lm_model, newdata = data.frame(hp = 110))
+predicted_mpg
+```
+\vspace{10pt}
+\pagebreak
+
+# Question5
+
+\vspace{10pt}
+
+## Part A : Customer Spending at a Coffee Shop
+
+\vspace{10pt}
+
+A local coffee shop has analysed its customer spending habits and found that the spending distribution follows a normal distribution with a mean of \$5.50 and a standard deviation of \$1.20. Calculate the following:
+\vspace{10pt}
+
+### a) Find the $90^{th}$ percentile of customer spending.
+\vspace{10pt}
+```{r}
+# Given parameters
+mean_spending <- 5.50
+sd_spending <- 1.20
+
+percentile_90 <- qnorm(0.9, mean = mean_spending, sd = sd_spending)
+percentile_90
+```
+\vspace{10pt}
+### b) Determine the $25^{th}$ percentile of customer spending.
+\vspace{10pt}
+```{r}
+percentile_25 <- qnorm(0.25, mean = mean_spending, sd = sd_spending)
+percentile_25
+```
+\vspace{10pt}
+### c) Calculate the median value of customer spending.
+\vspace{10pt}
+```{r}
+median_spending <- qnorm(0.50, mean = mean_spending, sd = sd_spending)
+median_spending
+```
+\vspace{10pt}
+
+### d) What percentage of customers spend **more** than $7.00?
+\vspace{10pt}
+```{r}
+percentage_above_7 <- 100 * (1 - pnorm(7, mean = mean_spending, sd = sd_spending))
+percentage_above_7
+```
+\vspace{10pt}
+\pagebreak
+
+## Part B: Disease Prevalence in a Population 
+\vspace{10pt}
+Suppose 5% of the population in a city is infected with a certain disease. Let $X$ be number of infected individuals in a random sample of size 50 from this population.
+\vspace{10pt}
+
+### a) Based on the problem setup, identify the most suitable probability distribution for $X$ and specify its name and parameters.
+\vspace{10pt}
+
+The most suitable probability distribution for X is the binomial distribution.
+
+The number of trials is fixed (sample size of 50).
+
+Each individual in the population can either be infected (success) or not infected (failure).
+
+The probability of an individual being infected (success) is 5% or 0.05, which remains constant.
+
+The trials (individuals selected) are independent. Because one individual getting selected doesn't affect another individual, since it is done randomly.
+
+Therefore, the most suitable probability distribution for $X$ is the binomial distribution.
+
+Parameters:
+
+n (number of trials) = 50 (sample size)
+
+p (probability of success) = 0.05 (probability of an individual being infected)
+\vspace{10pt}
+
+### b) Calculate the probability that fewer than 3 individuals in the sample are infected.
+\vspace{10pt}
+```{r}
+probability_fewer_than_3 <- pbinom(2, size = 50, prob = 0.05)
+probability_fewer_than_3
+```
+\vspace{10pt}
+### c) Find the mean and variance of $X$. 
+\vspace{10pt}
+```{r}
+# Given parameters
+n <- 50  # sample size
+p <- 0.05  # probability of an individual being infected
+
+# Calculate mean
+mean_X <- n * p
+mean_X
+```
+
+\vspace{10pt}
+```{r}
+# Calculate variance
+var_X <- n * p * (1 -p)
+var_X
+
+```
+\vspace{10pt}
+### d) If the infection rate in the city decreases to 2% and the sample size is increased to 200, identify the most suitable probability distribution for the new scenario. Provide reasoning for your choice.
+\vspace{10pt}
+
+
+If the infection rate in the city decreases to 2% and the sample size is increased to 200, the most suitable probability distribution for the new scenario would still be the binomial distribution.
+
+Reasoning:
+
+Fixed number of trials: The scenario still has a fixed number of individuals (trials) from the population, which is now 200 instead of 50.
+
+Two possible outcomes per trial: Each individual in the population can still either be infected (success) or not infected (failure).
+
+Constant probability of success: Although the probability of an individual being infected has decreased to 2%, the probability remains constant across all trials.
+
+Independent trials: We can assume that the sampling is still done randomly, and the trials (individuals selected) are independent of each other.
+
+Therefore, the binomial distribution is suitable for modeling the number of infected individuals (\(X\)) in a random sample of size 200 from the population, even with the change in the infection rate.
+
+\pagebreak
+
+# Question 6
+
+\vspace{10pt}
+You have a data set of 40 exam scores: 
+
+[82, 88, 75, 94, 90, 85, 78, 91, 86, 89, 92, 80, 87, 79, 84, 77, 83, 81, 76, 93, 88, 85, 89, 90, 82, 86, 75, 91, 79, 84, 78, 95, 88, 87, 93, 86, 82, 89, 90,80].
+\vspace{10pt}
+
+### a) Estimate the sampling distribution of the sample mean for this dataset using bootstrap. Use 20,000 bootstrap samples.
+\vspace{10pt}
+```{r}
+# Given dataset of exam scores
+exam_scores <- c(82, 88, 75, 94, 90, 85, 78, 91, 86, 89, 92, 80, 87, 79, 84,
+                 77, 83, 81, 76, 93, 88, 85, 89, 90, 82, 86, 75, 91, 79, 84,
+                 78, 95, 88, 87, 93, 86, 82, 89, 90, 80)
+
+# Number of bootstrap samples
+n_bootstrap_samples <- 20000
+
+# Generate bootstrap samples and calculate sample means
+bootstrap_means <- replicate(n_bootstrap_samples, 
+                             mean(sample(exam_scores, replace = TRUE)))
+
+# Display the first 100 bootstrap sample means
+head(bootstrap_means, 100)
+
+```
+\vspace{10pt}
+### b) Obtain the histogram of the bootstrap means.
+\vspace{10pt}
+```{r}
+par(las=1)
+hist(bootstrap_means, main = "Histogram of Bootstrap Means", 
+     xlab = "Sample Mean")
+box()
+```
+\vspace{10pt}
+
+### c) Calculate a 90% bootstrap percentile confidence interval for the mean.
+\vspace{10pt}
+```{r}
+lower_bound <- quantile(bootstrap_means, 0.05)
+upper_bound <- quantile(bootstrap_means, 0.95)
+confidence_interval <- c(lower_bound, upper_bound)
+confidence_interval
+```
+\vspace{10pt}
+
+### d) Check for the normality of the sampling distribution using a normal Q-Q plot. 
+\vspace{10pt}
+```{r}
+qqnorm(bootstrap_means)
+qqline(bootstrap_means, col = "red2", lwd = 2)
+```
+
